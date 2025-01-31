@@ -15,6 +15,7 @@ public class MenuServicio {
 		System.out.println("2.Modificar usuario");
 		System.out.println("3.Eliminar usuario");
 		System.out.println("4.Dar de alta una mesa");
+		System.out.println("5.Inicio de sesion");
 		System.out.println("0.Salir de la aplicación");
 		System.out.println("###############");
 		opcion=Rutilandia2Application.sc.nextInt();

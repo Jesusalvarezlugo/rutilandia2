@@ -17,7 +17,7 @@ public class UsuarioServicio {
 		
 	}
 public void nuevoUsuario(HttpSession sesion) throws URISyntaxException, IOException {
-		
+		apiServicio.cargarUsuariosDesdeApi();
 		UsuarioDto usuarioNuevo = new UsuarioDto();
 		
 		System.out.println("Introduzca su nombre: ");
@@ -30,7 +30,7 @@ public void nuevoUsuario(HttpSession sesion) throws URISyntaxException, IOExcept
 		System.out.println("Introduzca su teléfono: ");
 		usuarioNuevo.setTelefono(Rutilandia2Application.sc.next());
 		System.out.println("Introduzca su email: ");
-		usuarioNuevo.setEmail(Rutilandia2Application.sc.next());
+	    usuarioNuevo.setEmail(Rutilandia2Application.sc.next());
 		System.out.println("Introduzca su rol: ");
 		usuarioNuevo.setRol(Rutilandia2Application.sc.next());
 		System.out.println("Introduzca su contraseña: ");

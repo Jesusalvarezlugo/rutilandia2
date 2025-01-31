@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -63,7 +64,7 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 
 		// Leer la respuesta del servidor
 		int codigoRespuesta = conexion.getResponseCode();
-		
+		System.out.println("Codigo:"+codigoRespuesta);
 		if (codigoRespuesta == HttpURLConnection.HTTP_CREATED) {
 			BufferedReader in = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
 			StringBuilder response = new StringBuilder();
@@ -223,37 +224,37 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 	            return "error";
 	        }
 	    }
-	 
-	
-	    public String enviarRegistroMesa(MesaDto nuevaMesa, HttpSession session) throws URISyntaxException, IOException {
-	        // Verificar que los datos sean correctos antes de convertir a JSON
-	        System.out.println("Nombre de la mesa antes de enviar: " + nuevaMesa.getNombreMesa());
-	        System.out.println("Descripción de la mesa antes de enviar: " + nuevaMesa.getDescripcionMesa());
-
-	        // Definir la URI de la API
-	        URI uri = new URI("http://localhost:8082/api/mesas/crearMesa");
+	    
+	    /**
+	     * Método para enviar los datos a la api para hacer el login
+	     * @param usuario
+	     * @return
+	     * @throws URISyntaxException
+	     * @throws IOException
+	     */
+	    public String enviarLoginUsuario(UsuarioDto usuario) throws URISyntaxException, IOException {
+	        URI uri = new URI("http://localhost:8082/api/usuarios/login");
 	        URL url = uri.toURL();
 
-	        // Abrir la conexión HTTP
 	        HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
 	        conexion.setRequestMethod("POST");
 	        conexion.setRequestProperty("Content-Type", "application/json");
 	        conexion.setDoOutput(true);
 
-	        // Convertir el DTO de Mesa a JSON
+	        // Convertir el objeto usuario a JSON para enviarlo a la API
 	        ObjectMapper mapper = new ObjectMapper();
-	        String dtoAJson = mapper.writeValueAsString(nuevaMesa);
-	        System.out.println("JSON enviado: " + dtoAJson);  // Imprimir el JSON para verificar que los datos estén correctos
-
+	        String usuarioJson = mapper.writeValueAsString(usuario);
+	        System.out.println("Enviando JSON al backend: " + usuarioJson);
 	        // Enviar los datos al servidor
 	        OutputStream os = conexion.getOutputStream();
-	        os.write(dtoAJson.getBytes());
+	        os.write(usuarioJson.getBytes());
 	        os.flush();
 
 	        // Leer la respuesta del servidor
 	        int codigoRespuesta = conexion.getResponseCode();
+	        System.out.println("Código de respuesta: " + codigoRespuesta);
 
-	        if (codigoRespuesta == HttpURLConnection.HTTP_CREATED) {
+	        if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
 	            BufferedReader in = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
 	            StringBuilder response = new StringBuilder();
 	            String inputLine;
@@ -262,22 +263,80 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 	                response.append(inputLine);
 	            }
 	            in.close();
-
-	            // Convertir la respuesta en un objeto MesaDto
-	            MesaDto mesa = mapper.readValue(response.toString(), MesaDto.class);
-
-	            if (mesa != null) {
-	                // Guardar el objeto MesaDto en la sesión
-	                session.setAttribute("mesa", mesa);
-	                return "success";
-	            } else {
-	                System.out.println("Error: La respuesta de la API no contiene una mesa válida.");
-	                return "error";
+	            System.out.println("Respuesta de la API: " + response.toString());
+	            // Extraer el token de la respuesta
+	            Map<String, Object> responseMap = mapper.readValue(response.toString(), Map.class);
+	            if (responseMap.containsKey("token")) {
+	                return (String) responseMap.get("token");
 	            }
 	        }
 
-	        return "error";
+	        return null; // Si la API no devuelve un token o hay un error
 	    }
+	 
+	
+	    /**
+	     * Metodo para enviar a la api la mesa creada
+	     * @param nuevaMesa
+	     * @param session
+	     * @return
+	     * @throws URISyntaxException
+	     * @throws IOException
+	     */
+	    public String enviarRegistroMesa(MesaDto nuevaMesa, HttpSession session) throws URISyntaxException, IOException {
+	    	URI uri = new URI("http://localhost:8082/api/mesas/crearMesa");
+			URL url = uri.toURL();
+			
+			HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+			conexion.setRequestMethod("POST");
+			conexion.setRequestProperty("Content-Type", "application/json");
+			conexion.setDoOutput(true);
+			
+			// Pasar el dto a json para enviarlo a la api
+
+			ObjectMapper mapper = new ObjectMapper();
+
+			String dtoAJson = mapper.writeValueAsString(nuevaMesa);
+			System.out.println(dtoAJson);
+			
+			//se envian los datos al servidor
+			
+			OutputStream os = conexion.getOutputStream();
+			
+			os.write(dtoAJson.getBytes());
+			os.flush();
+
+			// Leer la respuesta del servidor
+			int codigoRespuesta = conexion.getResponseCode();
+			System.out.println("Codigo:"+codigoRespuesta);
+			if (codigoRespuesta == HttpURLConnection.HTTP_CREATED) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
+				StringBuilder response = new StringBuilder();
+				String inputLine;
+
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+
+				UsuarioDto usuario = mapper.readValue(response.toString(), UsuarioDto.class);
+
+				if (usuario != null) {
+					// Guardar el objeto UsuarioDto en la sesión
+
+					session.setAttribute("usuario", usuario);
+
+					return "success";
+				} else {
+					System.out.println("Error: La respuesta de la API no contiene un usuario válido.");
+					return "error";
+				}
+					
+			}
+			
+			return "error";
+		}
+	    
 	    
 	    public void cargarMesasDesdeApi() {
 	        // Realizamos una solicitud GET al endpoint para obtener todas las mesas
@@ -299,6 +358,50 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 	            for (MesaDto mesa : Rutilandia2Application.listaMesas) {
 	                System.out.println(mesa.toString());
 	            }
+	        }
+	    }
+	    
+	    
+	    
+	    public String eliminarMesaPorId(Long idMesa) throws URISyntaxException, IOException {
+	        // Definir la URL de la API para eliminar usuario por ID
+	        URI uri = new URI("http://localhost:8083/api/usuarios/eliminar/" + idMesa);
+	        URL url = uri.toURL();
+
+	        // Configurar la conexión HTTP
+	        HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+	        conexion.setRequestMethod("DELETE");
+	        conexion.setRequestProperty("Content-Type", "application/json");
+	        conexion.setDoOutput(true);
+
+	        // Leer la respuesta del servidor
+	        int codigoRespuesta = conexion.getResponseCode();
+
+	        if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+	            // Leer la respuesta exitosa
+	            BufferedReader in = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
+	            StringBuilder response = new StringBuilder();
+	            String inputLine;
+
+	            while ((inputLine = in.readLine()) != null) {
+	                response.append(inputLine);
+	            }
+	            in.close();
+
+	            System.out.println("Mesa eliminada correctamente: " + response.toString());
+	            return "success";
+	        } else {
+	            // Leer la respuesta de error
+	            BufferedReader in = new BufferedReader(new InputStreamReader(conexion.getErrorStream()));
+	            StringBuilder errorResponse = new StringBuilder();
+	            String inputLine;
+	            while ((inputLine = in.readLine()) != null) {
+	                errorResponse.append(inputLine);
+	            }
+	            in.close();
+
+	            System.out.println("Error al eliminar usuario: " + errorResponse.toString());
+	            return "error";
 	        }
 	    }
 

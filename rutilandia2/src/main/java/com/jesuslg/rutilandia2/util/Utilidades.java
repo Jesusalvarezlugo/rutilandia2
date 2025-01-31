@@ -25,7 +25,12 @@ public class Utilidades {
         }
     }
 	
-	
+	/**
+	 * Método para verificar contraseña
+	 * @param contrasenia
+	 * @param contraseniaEncriptada
+	 * @return true si son iguales, false si no lo son
+	 */
 	public static boolean verificarEncriptacion(String contrasenia,String contraseniaEncriptada) {
 		
 		

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jesuslg.rutilandia2.Rutilandia2Application;
 import com.jesuslg.rutilandia2.dtos.MesaDto;
+import com.jesuslg.rutilandia2.dtos.UsuarioDto;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,8 +29,12 @@ public class MesaServicio {
 		   Rutilandia2Application.sc.nextLine();
 		   System.out.println("Introduca la descripcion de la mesa: ");
 		   mesaNueva.setDescripcionMesa(Rutilandia2Application.sc.nextLine());
-		    apiServicio.enviarRegistroMesa(mesaNueva, sesion);
+		   apiServicio.enviarRegistroMesa(mesaNueva, sesion);
 		}
+	 
+	 
+	 
+	 
 
 
 }

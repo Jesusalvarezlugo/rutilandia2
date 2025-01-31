@@ -2,12 +2,7 @@ package com.jesuslg.rutilandia2.dtos;
 
 public class UsuarioDto {
 	 Long id;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	String nombre="aaaaa";
 	String apellido1="aaaaa";
 	String apellido2="aaaaa";
@@ -32,12 +27,7 @@ public class UsuarioDto {
 		this.apellido1 = apellido1;
 	}
 	
-	@Override
-	public String toString() {
-		return "UsuarioDto [nombre=" + nombre + ", telefono=" + telefono + ", email=" + email + ", rol=" + rol
-				+ ", contrasenia=" + contrasenia + ", repContrasenia=" + repContrasenia + ", apellidos=" + apellidos
-				+ "]";
-	}
+	
 	public String getApellido2() {
 		return apellido2;
 	}
@@ -79,6 +69,20 @@ public class UsuarioDto {
 	}
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		return "UsuarioDto [nombre=" + nombre + ", telefono=" + telefono + ", email=" + email + ", rol=" + rol
+				+ ", contrasenia=" + contrasenia + ", repContrasenia=" + repContrasenia + ", apellidos=" + apellidos
+				+ "]";
 	}
 
 }

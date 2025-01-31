@@ -4,7 +4,8 @@ public class MesaDto {
 	
 	//Atributos
 	
-		Long id;
+		Long idMesa;
+		
 		String nombreMesa="aaaaa";
 		String descripcionMesa="aaaaa";
 		
@@ -19,6 +20,13 @@ public class MesaDto {
 		}
 		public void setDescripcionMesa(String descripcionMesa) {
 			this.descripcionMesa = descripcionMesa;
+		}
+		
+		public Long getIdMesa() {
+			return idMesa;
+		}
+		public void setIdMesa(Long id) {
+			this.idMesa= id;
 		}
 		
 

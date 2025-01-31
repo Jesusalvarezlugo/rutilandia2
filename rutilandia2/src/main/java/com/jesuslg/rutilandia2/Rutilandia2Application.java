@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jesuslg.rutilandia2.dtos.MesaDto;
 import com.jesuslg.rutilandia2.dtos.UsuarioDto;
+import com.jesuslg.rutilandia2.servicios.LoginServicio;
 import com.jesuslg.rutilandia2.servicios.MenuServicio;
 import com.jesuslg.rutilandia2.servicios.MesaServicio;
 import com.jesuslg.rutilandia2.servicios.UsuarioServicio;
@@ -23,14 +24,16 @@ public class Rutilandia2Application  {
 	
 	public static UsuarioServicio usuarioServicio = new UsuarioServicio();
 	public static MesaServicio mesaServicio = new MesaServicio();
+	public static LoginServicio loginServicio = new LoginServicio();
 	public static List<UsuarioDto> listaUsuarios = new ArrayList<UsuarioDto>();
 	public static List<MesaDto> listaMesas = new ArrayList<MesaDto>();
     public static Scanner sc = new Scanner(System.in);
+    
     public static void main(String[] args) throws URISyntaxException, IOException {
     	 int opcionS;
     	 boolean cerrarMenu=false;
     	 MenuServicio ms = new MenuServicio();
-    	 HttpSession sesion = null;
+    	 HttpSession sesion =null;
     	 
     	 
     	 //ApiServicio apiServicio;
@@ -67,6 +70,11 @@ public class Rutilandia2Application  {
             	case 4:
             		System.out.println("Se dara de alta una nueva mesa");
             		mesaServicio.nuevaMesa(sesion);
+            		break;
+            		
+            	case 5:
+            		System.out.println("Inicio de sesion");
+            		loginServicio.iniciarSesion(sesion);
             		break;
             		
             	default:

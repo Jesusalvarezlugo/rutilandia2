@@ -8,6 +8,9 @@ import com.jesuslg.rutilandia2.dtos.UsuarioDto;
 import com.jesuslg.rutilandia2.util.Utilidades;
 
 import jakarta.servlet.http.HttpSession;
+/**
+ * Clase que gestiona las funcionalidades del usuario
+ */
 @Service
 public class UsuarioServicio {
 	
@@ -16,6 +19,12 @@ public class UsuarioServicio {
 	public UsuarioServicio() {
 		
 	}
+	/**
+	 * Método para crear un nuevo usuario
+	 * @param sesion
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 public void nuevoUsuario(HttpSession sesion) throws URISyntaxException, IOException {
 		apiServicio.cargarUsuariosDesdeApi();
 		UsuarioDto usuarioNuevo = new UsuarioDto();
@@ -51,6 +60,10 @@ public void nuevoUsuario(HttpSession sesion) throws URISyntaxException, IOExcept
 	
 		apiServicio.enviarRegistroUsuario(usuarioNuevo,sesion);
 	}
+/**
+ * Método para modificar un usuario
+ * @throws Exception
+ */
 
 public void modificarUsuario() throws Exception {
     // Carga los usuarios desde la API
@@ -158,6 +171,11 @@ public void modificarUsuario() throws Exception {
     }
 }
 
+/**
+ * Método para eliminar un usuario
+ * @throws Exception
+ */
+
 public void eliminarUsuario() throws Exception {
     // Cargar usuarios desde la API
     apiServicio.cargarUsuariosDesdeApi();
@@ -201,4 +219,25 @@ public void eliminarUsuario() throws Exception {
     }
 }
 
+/**
+ * Método para recuperar la contraseña del usuario
+ * @throws Exception
+ */
+
+public void recuperarContrasenia() throws Exception{
+	apiServicio.cargarUsuariosDesdeApi();
+	
+	
+	System.out.println("Introduzca el email para recuperar la contraseña");
+	
+	String emailAComprobar=Rutilandia2Application.sc.next();
+	
+	for(UsuarioDto usuario:Rutilandia2Application.listaUsuarios) {
+		if(emailAComprobar.equals(usuario.getEmail())) {
+			usuario.setToken(Utilidades.generateToken(usuario));
+			
+		}
+		
+	}
+ }
 }

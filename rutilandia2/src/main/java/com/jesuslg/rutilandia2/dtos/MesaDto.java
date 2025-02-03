@@ -1,5 +1,7 @@
 package com.jesuslg.rutilandia2.dtos;
-
+/**
+ * Clase de la entidad mesa
+ */
 public class MesaDto {
 	
 	//Atributos

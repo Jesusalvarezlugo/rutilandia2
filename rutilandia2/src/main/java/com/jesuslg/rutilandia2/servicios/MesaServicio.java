@@ -12,7 +12,9 @@ import com.jesuslg.rutilandia2.dtos.UsuarioDto;
 import jakarta.servlet.http.HttpSession;
 
 
-
+/**
+ * Clase que gestiona las funcionalidades de las mesas
+ */
 @Service
 public class MesaServicio {
 	

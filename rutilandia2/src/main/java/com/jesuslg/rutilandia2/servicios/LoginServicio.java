@@ -8,13 +8,21 @@ import com.jesuslg.rutilandia2.dtos.UsuarioDto;
 import com.jesuslg.rutilandia2.util.Utilidades;
 
 import jakarta.servlet.http.HttpSession;
-
+/**
+ * Clase que contendrá las funciones del login de la página.
+ */
 public class LoginServicio {
 
 	private ApiServicio apiServicio = new ApiServicio();
 	public LoginServicio() {
 		
 	}
+	/**
+	 * Método para el inicio de sesión.
+	 * @param sesion
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	public void iniciarSesion(HttpSession sesion) throws URISyntaxException, IOException {
 	    UsuarioDto usuarioLogin = new UsuarioDto();
 
@@ -25,9 +33,6 @@ public class LoginServicio {
 
 	    System.out.print("Ingrese su contraseña: ");
 	    usuarioLogin.setContrasenia(Rutilandia2Application.sc.next());
-
-	    
-	    
 
 	    // Enviar los datos a la API
 	    String token = apiServicio.enviarLoginUsuario(usuarioLogin);

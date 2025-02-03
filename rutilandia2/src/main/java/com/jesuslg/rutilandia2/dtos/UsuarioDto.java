@@ -1,5 +1,7 @@
 package com.jesuslg.rutilandia2.dtos;
 
+import java.sql.Date;
+
 public class UsuarioDto {
 	 Long id;
 	
@@ -12,6 +14,9 @@ public class UsuarioDto {
 	String contrasenia="aaaaa";
 	String repContrasenia="aaaaa";
 	String apellidos="aaaaa";
+	String token = "aaaaa";
+	Date fechaExpiracion;
+	
 	
 	//Getters y Setters
 	public String getNombre() {
@@ -26,7 +31,6 @@ public class UsuarioDto {
 	public void setApellido1(String apellido1) {
 		this.apellido1 = apellido1;
 	}
-	
 	
 	public String getApellido2() {
 		return apellido2;
@@ -70,12 +74,23 @@ public class UsuarioDto {
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Date getFechaExpiracion() {
+		return fechaExpiracion;
+	}
+	public void setFechaExpiracion(Date fechaExpiracion) {
+		this.fechaExpiracion = fechaExpiracion;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	@Override

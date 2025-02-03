@@ -23,7 +23,7 @@ import com.jesuslg.rutilandia2.dtos.UsuarioDto;
 import jakarta.servlet.http.HttpSession;
 import reactor.core.publisher.Mono;
 /**
- * Clase que gestiona los metodos para comunicar con la api
+ * Clase que gestiona los métodos para comunicar con la api
  */
 @Service
 public class ApiServicio {
@@ -182,7 +182,13 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 	            return "error";
 	        }
 	    }
-	    
+	    /**
+	     * Método para eliminar un usuario por la id
+	     * @param idUsuario
+	     * @return una respuesta  para saber si el usuario ha sido eliminado
+	     * @throws URISyntaxException
+	     * @throws IOException
+	     */
 	    public String eliminarUsuarioPorId(Long idUsuario) throws URISyntaxException, IOException {
 	        // Definir la URL de la API para eliminar usuario por ID
 	        URI uri = new URI("http://localhost:8082/api/usuarios/eliminar/" + idUsuario);
@@ -337,7 +343,9 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 			return "error";
 		}
 	    
-	    
+	    /**
+	     * Método para traer todas las mesas de la base de datos
+	     */
 	    public void cargarMesasDesdeApi() {
 	        // Realizamos una solicitud GET al endpoint para obtener todas las mesas
 	        Mono<MesaDto[]> response = webClient.get()
@@ -362,7 +370,13 @@ public String enviarRegistroUsuario(UsuarioDto nuevoUsuario,HttpSession session)
 	    }
 	    
 	    
-	    
+	    /**
+	     * Método para eliminar una mesa por id
+	     * @param idMesa
+	     * @return mensaje de que la mesa ha sido eliminada
+	     * @throws URISyntaxException
+	     * @throws IOException
+	     */
 	    public String eliminarMesaPorId(Long idMesa) throws URISyntaxException, IOException {
 	        // Definir la URL de la API para eliminar usuario por ID
 	        URI uri = new URI("http://localhost:8083/api/usuarios/eliminar/" + idMesa);
